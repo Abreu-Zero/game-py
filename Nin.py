@@ -16,7 +16,7 @@ def StartGame():
     return pieces
 
 def RemoveCounter():
-    remove = int(input("\nPlease select the number of pieces to remove per turn: 1 or 2: "))
+    remove = int(input("\nPlease select the number of pieces to remove per turn: "))
 
     while remove <= 0:
         if remove <= 0:
