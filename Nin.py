@@ -1,6 +1,6 @@
 def ShowRules():
     print("The game is based on the number of pieces in the board,")
-    print("every tunr each player removes 1 oe 2 pieces") 
+    print("every turn each player removes pieces") 
     print("based on the rules settled at the beggining")
     print("the game is won by the player that removes the last piece on the board")
     return
@@ -11,29 +11,77 @@ def StartGame():
     while pieces < 1:
        pieces = int(input("Please select the number of pieces: "))
     
-    print("Ok lets go!\n", pieces, "pieces!")
+    print("Ok lets go!", pieces, "pieces!")
     
     return pieces
 
 def RemoveCounter():
     remove = int(input("\nPlease select the number of pieces to remove per turn: 1 or 2: "))
 
-    while remove <= 0 or remove > 2:
+    while remove <= 0:
         if remove <= 0:
             remove = int(input("\nPlease don't select zero or a negative number: "))
-        if remove > 2:
-            remove = int(input("\nPlease don't select a number bigger than 2: "))
+        
             
-    print("Nice\n", remove, "pieces!")
+    print("Nice,",remove, "pieces!")
     return remove
 
 def CalculateTurn(number, rem):
-    if pieces == rem:
-        turn = 1
-    elif pieces % rem != 0:
-        turn = 1
-    else:
+
+    if pieces % (rem + 1)  == 0:
         turn = 2
+    else:
+        turn = 1
+    return turn
+
+def ComputerTurn(pieces, remove):
+    print ("\nCPU's turn")
+    cpuMove = 1
+    moved = False
+    if pieces > 0:
+        while cpuMove < remove:
+            if (pieces - cpuMove) % (remove + 1) == 0:
+                print("\nCPU removed", cpuMove, "pieces")
+                pieces -= cpuMove
+                moved = True
+            else:
+                cpuMove += 1
+                
+        if not moved:
+            print("\nCPU removed", cpuMove, "pieces")
+            pieces -= cpuMove
+
+        print("Total pieces =", pieces)
+        cpuMove = 1
+        moved = False
+        return pieces
+
+def PlayerTurn(pieces, remove):
+    if pieces > 0:
+            print("\nYour turn")
+            playerRemove = int(input("Please type how many pieces you want to remove: "))
+            
+            while playerRemove > remove or playerRemove <= 0 or pieces - playerRemove < 0:
+                 playerRemove = int(input("You cant remove that much, Player: "))
+                    
+            print("\nPlayer removed", playerRemove)
+            pieces -= playerRemove
+
+            print("Total pieces =", pieces)
+
+    return pieces
+
+def Game(turn, pieces, remove):
+    if turn == 1:
+        piecesGame = ComputerTurn(pieces, remove)
+        piecesGame = PlayerTurn(piecesGame, remove)
+            
+            
+    if turn == 2:
+        piecesGame = PlayerTurn(pieces, remove)
+        piecesGame = ComputerTurn(piecesGame, remove)
+        
+    return piecesGame
 
 print("Welcome to YCNW 1.0")
 print("-------------------\n")
@@ -56,55 +104,7 @@ if option == 1:
     turn = CalculateTurn(pieces, remove)
 
     while pieces > 0:
-        if turn == 1:
-            print ("\nCPU's turn")
-            if pieces - remove >= remove + 1:
-                print("\nCPU removed" ,remove , "pieces")
-                pieces -= remove
-            elif pieces == remove:
-                print("\nCPU removed" ,remove , "pieces")
-                pieces -= remove
-            else:
-                print("\nCPU removed 1 piece")
-                pieces -= 1
-
-            print("Total pieces =", pieces)
-            
-            if pieces > 0:
-                print("\nYour turn")
-                playerRemove = int(input("Please type how many pieces you want to remove: "))
-            
-                while playerRemove > remove or playerRemove <= 0:
-                    playerRemove = int(input("You cant remove that much, Player: "))
-                    
-                print("\nPlayer removed", playerRemove)
-                pieces -= playerRemove
-
-                print("Total pieces =", pieces)
-
-        if turn == 2:
-            print("\nYour turn")
-            playerRemove = int(input("Please type how many pieces you want to remove: "))
-            
-            while playerRemove > remove or playerRemove <= 0:
-                 playerRemove = int(input("You cant remove that much,Player: "))
-            print("\nPlayer removed", playerRemove)
-            pieces -= playerRemove
-
-            print("Total pieces =", pieces)
-
-            print ("\nCPU's turn")
-            if pieces - remove >= remove + 1:
-                print("\nCPU removed" ,remove , "pieces")
-                pieces -= remove
-            elif pieces == remove:
-                print("\nCPU removed" ,remove , "pieces")
-                pieces -= remove
-            else:
-                print("\nCPU removed 1 piece")
-                pieces -= 1
-
-            print("Total pieces =", pieces)     
+        pieces = Game(turn, pieces, remove)
 
     if pieces == 0:
         print("CPU won!")
