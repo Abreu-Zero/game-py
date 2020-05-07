@@ -1,4 +1,5 @@
 def ShowRules():
+    ## print the rules
     print("The game is based on the number of pieces in the board,")
     print("every turn each player removes pieces") 
     print("based on the rules settled at the beggining")
@@ -6,6 +7,7 @@ def ShowRules():
     return
 
 def PiecesCounter():
+    ## define the number of pieces to start a game
     pieces = int(input("Please select the number of pieces: "))
 
     while pieces < 1:
@@ -16,6 +18,7 @@ def PiecesCounter():
     return pieces
 
 def RemoveCounter():
+    ## input the amount of pieces to be removed per turn
     remove = int(input("\nPlease select the number of pieces to remove per turn: "))
 
     while remove <= 0:
@@ -27,6 +30,7 @@ def RemoveCounter():
     return remove
 
 def CalculateTurn(number, rem):
+    ## calculates if CPU should let the player go first to win
 
     if number % (rem + 1)  == 0:
         turn = 2
@@ -40,6 +44,8 @@ def ComputerTurn(pieces, remove):
     moved = False
     if pieces > 0:
         while cpuMove < remove:
+            ## loops through the amount of pieces that it can remove to choose the best move
+            ## too keep player from winning
             if (pieces - cpuMove) % (remove + 1) == 0:
                 print("\nCPU removed", cpuMove)
                 pieces -= cpuMove
@@ -57,6 +63,7 @@ def ComputerTurn(pieces, remove):
         return pieces
 
 def PlayerTurn(pieces, remove):
+    ## Inputs player movements
     if pieces > 0:
             print("\nYour turn")
             playerRemove = int(input("Please type how many pieces you want to remove: "))
@@ -72,6 +79,7 @@ def PlayerTurn(pieces, remove):
     return pieces
 
 def Game(turn, pieces, remove):
+    ## order the turns, feeds the game
     if turn == 1:
         piecesGame = ComputerTurn(pieces, remove)
         piecesGame = PlayerTurn(piecesGame, remove)
