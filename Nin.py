@@ -59,14 +59,11 @@ def ComputerTurn(pieces, remove):
 def PlayerTurn(pieces, remove):
     if pieces > 0:
             print("\nYour turn")
-            playerRemove = input("Please type how many pieces you want to remove: ")
-            if not playerRemove is None and playerRemove != "":
-                playerRemove = int(playerRemove)
+            playerRemove = int(input("Please type how many pieces you want to remove: "))
             
-            while playerRemove > remove or playerRemove <= 0 or pieces - playerRemove < 0 or playerRemove is None:
-                 playerRemove = input("You cant remove that much, Player: ")
-
-            playerRemove = int(playerRemove)      
+            while playerRemove > remove or playerRemove <= 0 or pieces - playerRemove < 0:
+                 playerRemove = int(input("You cant remove that much, Player: "))
+                    
             print("\nPlayer removed", playerRemove)
             pieces -= playerRemove
 
@@ -124,7 +121,7 @@ while option == 1:
     StartGame()
     option  = int(input("\nWant to Play again?\n1- Yes\n2- No\n"))
         
-if option ==2:
+if option != 1:
     print("ok, good bye :(")
     
 
