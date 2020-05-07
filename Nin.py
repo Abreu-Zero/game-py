@@ -5,7 +5,7 @@ def ShowRules():
     print("the game is won by the player that removes the last piece on the board")
     return
 
-def StartGame():
+def PiecesCounter():
     pieces = int(input("Please select the number of pieces: "))
 
     while pieces < 1:
@@ -28,7 +28,7 @@ def RemoveCounter():
 
 def CalculateTurn(number, rem):
 
-    if pieces % (rem + 1)  == 0:
+    if number % (rem + 1)  == 0:
         turn = 2
     else:
         turn = 1
@@ -41,14 +41,14 @@ def ComputerTurn(pieces, remove):
     if pieces > 0:
         while cpuMove < remove:
             if (pieces - cpuMove) % (remove + 1) == 0:
-                print("\nCPU removed", cpuMove, "pieces")
+                print("\nCPU removed", cpuMove)
                 pieces -= cpuMove
                 moved = True
             else:
                 cpuMove += 1
                 
         if not moved:
-            print("\nCPU removed", cpuMove, "pieces")
+            print("\nCPU removed", cpuMove)
             pieces -= cpuMove
 
         print("Total pieces =", pieces)
@@ -59,11 +59,14 @@ def ComputerTurn(pieces, remove):
 def PlayerTurn(pieces, remove):
     if pieces > 0:
             print("\nYour turn")
-            playerRemove = int(input("Please type how many pieces you want to remove: "))
+            playerRemove = input("Please type how many pieces you want to remove: ")
+            if not playerRemove is None and playerRemove != "":
+                playerRemove = int(playerRemove)
             
-            while playerRemove > remove or playerRemove <= 0 or pieces - playerRemove < 0:
-                 playerRemove = int(input("You cant remove that much, Player: "))
-                    
+            while playerRemove > remove or playerRemove <= 0 or pieces - playerRemove < 0 or playerRemove is None:
+                 playerRemove = input("You cant remove that much, Player: ")
+
+            playerRemove = int(playerRemove)      
             print("\nPlayer removed", playerRemove)
             pieces -= playerRemove
 
@@ -83,6 +86,25 @@ def Game(turn, pieces, remove):
         
     return piecesGame
 
+def StartGame():
+
+    print("Game Starting...")
+    print("-------------------\n")
+    
+    piecesInGame = PiecesCounter()
+    removeInGame = RemoveCounter()
+    
+    turn = CalculateTurn(piecesInGame, removeInGame)
+
+    while piecesInGame > 0:
+        piecesInGame = Game(turn, piecesInGame, removeInGame)
+
+        if piecesInGame == 0:
+            print("CPU won!")
+
+
+        
+
 print("Welcome to YCNW 1.0")
 print("-------------------\n")
 
@@ -97,18 +119,11 @@ if option == 2:
     ShowRules()
     option = int(input("\nWant to start the game now? I want to play!\n1- Yes\n2- No\n"))
 
-if option == 1:
-    pieces = StartGame()
-    remove = RemoveCounter()
-    
-    turn = CalculateTurn(pieces, remove)
+while option == 1:
 
-    while pieces > 0:
-        pieces = Game(turn, pieces, remove)
-
-    if pieces == 0:
-        print("CPU won!")
-
+    StartGame()
+    option  = int(input("\nWant to Play again?\n1- Yes\n2- No\n"))
+        
 if option ==2:
     print("ok, good bye :(")
     
