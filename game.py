@@ -41,25 +41,25 @@ class Game:
 
     def computer_turn(self, pieces, remove):
         print("\nCPU's turn")
-        cpuMove = 1
+        cpu_move = 1
         moved = False
         if pieces > 0:
-            while cpuMove < remove:
+            while cpu_move < remove:
                 ## loops through the amount of pieces that it can remove to choose the best move
                 ## too keep player from winning
-                if (pieces - cpuMove) % (remove + 1) == 0:
-                    print("\nCPU removed", cpuMove)
-                    pieces -= cpuMove
+                if (pieces - cpu_move) % (remove + 1) == 0:
+                    print("\nCPU removed", cpu_move)
+                    pieces -= cpu_move
                     moved = True
                 else:
-                    cpuMove += 1
+                    cpu_move += 1
 
             if not moved:
-                print("\nCPU removed", cpuMove)
-                pieces -= cpuMove
+                print("\nCPU removed", cpu_move)
+                pieces -= cpu_move
 
             print("Total pieces =", pieces)
-            cpuMove = 1
+            cpu_move = 1
             moved = False
             return pieces
 
@@ -67,13 +67,13 @@ class Game:
         ## Inputs player movements
         if pieces > 0:
             print("\nYour turn")
-            playerRemove = int(input("Please type how many pieces you want to remove: "))
+            player_remove = int(input("Please type how many pieces you want to remove: "))
 
-            while playerRemove > remove or playerRemove <= 0 or pieces - playerRemove < 0:
-                playerRemove = int(input("You cant remove that much, Player: "))
+            while player_remove > remove or player_remove <= 0 or pieces - player_remove < 0:
+                player_remove = int(input("You cant remove that much, Player: "))
 
-            print("\nPlayer removed", playerRemove)
-            pieces -= playerRemove
+            print("\nPlayer removed", player_remove)
+            pieces -= player_remove
 
             print("Total pieces =", pieces)
 
@@ -82,27 +82,27 @@ class Game:
     def update(self, turn, pieces, remove):
         ## order the turns, feeds the game
         if turn == 1:
-            piecesGame = self.computer_turn(pieces, remove)
-            piecesGame = self.player_turn(piecesGame, remove)
+            pieces_game = self.computer_turn(pieces, remove)
+            pieces_game = self.player_turn(pieces_game, remove)
 
         if turn == 2:
-            piecesGame = self.player_turn(pieces, remove)
-            piecesGame = self.computer_turn(piecesGame, remove)
+            pieces_game = self.player_turn(pieces, remove)
+            pieces_game = self.computer_turn(pieces_game, remove)
 
-        return piecesGame
+        return pieces_game
 
     def start_game(self):
 
         print("Game Starting...")
         print("-------------------\n")
 
-        piecesInGame = self.pieces_counter()
-        removeInGame = self.remove_counter()
+        pieces_in_game = self.pieces_counter()
+        remove_in_game = self.remove_counter()
 
-        turn = self.calculate_turn(piecesInGame, removeInGame)
+        turn = self.calculate_turn(pieces_in_game, remove_in_game)
 
-        while piecesInGame > 0:
-            piecesInGame = self.update(turn, piecesInGame, removeInGame)
+        while pieces_in_game > 0:
+            pieces_in_game = self.update(turn, pieces_in_game, remove_in_game)
 
-            if piecesInGame == 0:
+            if pieces_in_game == 0:
                 print("CPU won!")
