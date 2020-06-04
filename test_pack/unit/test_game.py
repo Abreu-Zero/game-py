@@ -11,6 +11,9 @@ class UnitTest(unittest.TestCase):
 
     def test_show_rules(self):
         test = self.new_game()
+
+        ### shoud return the rules to be print at main_menu
+
         test_string = ("The game is based on the number of pieces in the board,\n"
                        "every turn each player removes pieces\n"
                        "based on the rules settled at the beggining\n"
@@ -27,3 +30,27 @@ class UnitTest(unittest.TestCase):
 
         self.assertEqual(test.calculate_turn(5, 5), 1) #positive value returns player
         self.assertEqual(test.calculate_turn(6, 5), 2)  # positive value returns cpu
+
+    def test_computer_turn(self):
+        test = self.new_game()
+
+        ##CPU needs to keep the number of pieces not divisible by the number the player can remove
+        ##CPU needs to try to be the one to reach 0 pieces
+        ##CPU cant remove 0 pieces or a negative number
+        ##CPU should not remove more pieces than available nor than settled at remove_counter()
+
+        ##Valid inputs
+        self.assertEqual(test.computer_turn(1, 2), 0)  ##case 1 pieces < remove
+        self.assertEqual(test.computer_turn(4, 2), 3)  ##case 2 pieces - remove == pieces - remove + 1
+        self.assertEqual(test.computer_turn(8, 3), 5)  ##case 3 pieces - remove > pieces - remove + 1
+        self.assertEqual(test.computer_turn(8, 8), 0)  ##case 4 pieces == remove
+
+    def test_computer_turn_invalid_input(self):
+        test = self.new_game()
+
+        ##Invalid inputs
+
+        self.assertRaises(Exception, test.computer_turn, 5, 0)
+        self.assertRaises(Exception, test.computer_turn, 5, -1)
+
+
