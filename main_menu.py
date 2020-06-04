@@ -10,7 +10,7 @@ while option != 1 and option != 2:
     option = int(input("\nPlease select an option:\n1- Play Game\n2- Rules\n"))
 
 if option == 2:
-    instance.show_rules()
+    print(instance.show_rules())
     option = int(input("\nWant to start the game now? I want to play!\n1- Yes\n2- No\n"))
 
 while option == 1:

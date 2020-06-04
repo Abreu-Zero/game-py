@@ -1,9 +1,9 @@
 class Game:
     def show_rules(self):
         ## print the rules
-        text = ("The game is based on the number of pieces in the board,/n"
-                "every turn each player removes pieces/n"
-                "based on the rules settled at the beggining/n"
+        text = ("The game is based on the number of pieces in the board,\n"
+                "every turn each player removes pieces\n"
+                "based on the rules settled at the beggining\n"
                 "the game is won by the player that removes the last piece on the board")
 
         return text
@@ -106,8 +106,3 @@ class Game:
 
             if piecesInGame == 0:
                 print("CPU won!")
-
-
-
-
-
