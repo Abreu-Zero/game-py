@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import game
 
 
@@ -53,4 +54,29 @@ class UnitTest(unittest.TestCase):
         self.assertRaises(Exception, test.computer_turn, 5, 0) ##case 5 invalid input 0
         self.assertRaises(Exception, test.computer_turn, 5, -1) ##case 6 invalid input negative
 
+    def test_pieces_counter(self):
+        test = self.new_game()
+        invalid_promt = "Please select the number of pieces: "
+
+        ##User will input number of pieces to game
+        ##Input needs to be a positive number
+        ##System should not accept input <= 0
+
+        #case 1 valid input
+        with patch("builtins.input", return_value="1") as mocked_input:
+            with patch("builtins.print") as mocked_print:
+                test.pieces_counter()
+                mocked_print.assert_called_with("Ok lets go! 1 pieces!")
+
+        #case 2 invalid input 0
+        with patch("builtins.input") as mocked_input:
+            mocked_input.side_effect = 0, 1
+            test.pieces_counter()
+            mocked_input.assert_called_with(invalid_promt)
+
+        #case 3 invalid input -1
+        with patch("builtins.input") as mocked_input:
+            mocked_input.side_effect = -1, 1
+            test.pieces_counter()
+            mocked_input.assert_called_with(invalid_promt)
 
