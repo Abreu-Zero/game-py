@@ -50,7 +50,7 @@ class UnitTest(unittest.TestCase):
 
         ##Invalid inputs
 
-        self.assertRaises(Exception, test.computer_turn, 5, 0)
-        self.assertRaises(Exception, test.computer_turn, 5, -1)
+        self.assertRaises(Exception, test.computer_turn, 5, 0) ##case 5 invalid input 0
+        self.assertRaises(Exception, test.computer_turn, 5, -1) ##case 6 invalid input negative
 
 
