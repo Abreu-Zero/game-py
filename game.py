@@ -15,7 +15,7 @@ class Game:
         while pieces < 1:
             pieces = int(input("Please select the number of pieces: "))
 
-        print("Ok lets go!", pieces, "pieces!")
+        print("Ok lets go! {} pieces!".format(pieces))
 
         return pieces
 
@@ -27,7 +27,7 @@ class Game:
             if remove <= 0:
                 remove = int(input("\nPlease don't select zero or a negative number: "))
 
-        print("Nice,", remove, "pieces!")
+        print("Nice, {} pieces!".format(remove))
         return remove
 
     def calculate_turn(self, number, rem):
