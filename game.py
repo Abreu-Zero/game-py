@@ -41,6 +41,10 @@ class Game:
 
     def computer_turn(self, pieces, remove):
         print("\nCPU's turn")
+
+        if(remove <= 0):
+            raise Exception("remove cant be < 0")
+
         cpu_move = 1
         moved = False
         if pieces > 0:
