@@ -80,3 +80,28 @@ class UnitTest(unittest.TestCase):
             test.pieces_counter()
             mocked_input.assert_called_with(invalid_promt)
 
+    def test_remove_counter(self):
+        test = self.new_game()
+        invalid_promt = "\nPlease don't select zero or a negative number: "
+
+        ##User will input number of pieces to that can be removed
+        ##Input needs to be a positive number
+        ##System should not accept input <= 0
+
+        # case 1 valid input
+        with patch("builtins.input", return_value="1") as mocked_input:
+            with patch("builtins.print") as mocked_print:
+                test.remove_counter()
+                mocked_print.assert_called_with("Nice, 1 pieces!")
+
+        # case 2 invalid input 0
+        with patch("builtins.input") as mocked_input:
+            mocked_input.side_effect = 0, 1
+            test.remove_counter()
+            mocked_input.assert_called_with(invalid_promt)
+
+        # case 3 invalid input -1
+        with patch("builtins.input") as mocked_input:
+            mocked_input.side_effect = -1, 1
+            test.remove_counter()
+            mocked_input.assert_called_with(invalid_promt)
