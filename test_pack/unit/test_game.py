@@ -29,7 +29,7 @@ class UnitTest(unittest.TestCase):
         ## if the number of pieces is divisible by the number that the player can remove
         ## then the cpu must move first
 
-        self.assertEqual(test.calculate_turn(5, 5), 1) #positive value returns player
+        self.assertEqual(test.calculate_turn(5, 5), 1)  # positive value returns player
         self.assertEqual(test.calculate_turn(6, 5), 2)  # positive value returns cpu
 
     def test_computer_turn(self):
@@ -51,8 +51,8 @@ class UnitTest(unittest.TestCase):
 
         ##Invalid inputs
 
-        self.assertRaises(Exception, test.computer_turn, 5, 0) ##case 5 invalid input 0
-        self.assertRaises(Exception, test.computer_turn, 5, -1) ##case 6 invalid input negative
+        self.assertRaises(Exception, test.computer_turn, 5, 0)  ##case 5 invalid input 0
+        self.assertRaises(Exception, test.computer_turn, 5, -1)  ##case 6 invalid input negative
 
     def test_pieces_counter(self):
         test = self.new_game()
@@ -62,19 +62,19 @@ class UnitTest(unittest.TestCase):
         ##Input needs to be a positive number
         ##System should not accept input <= 0
 
-        #case 1 valid input
+        # case 1 valid input
         with patch("builtins.input", return_value="1") as mocked_input:
             with patch("builtins.print") as mocked_print:
                 test.pieces_counter()
                 mocked_print.assert_called_with("Ok lets go! 1 pieces!")
 
-        #case 2 invalid input 0
+        # case 2 invalid input 0
         with patch("builtins.input") as mocked_input:
             mocked_input.side_effect = 0, 1
             test.pieces_counter()
             mocked_input.assert_called_with(invalid_promt)
 
-        #case 3 invalid input -1
+        # case 3 invalid input -1
         with patch("builtins.input") as mocked_input:
             mocked_input.side_effect = -1, 1
             test.pieces_counter()
@@ -105,3 +105,59 @@ class UnitTest(unittest.TestCase):
             mocked_input.side_effect = -1, 1
             test.remove_counter()
             mocked_input.assert_called_with(invalid_promt)
+
+    def test_player_turn(self):
+        test = self.new_game()
+        invalid_promt = "You cant remove that much, Player: "
+
+        ##Player inputs the amout of pieces to remove
+        ##the game cant accept an input <0 and cant accept a move > than the allowed remove
+        ##game should handle floats
+
+        # case 1 valid input < remove
+        with patch("builtins.input", return_value=1) as mocked_input:
+            self.assertEqual(test.player_turn(2, 1), 1)  ## 2 pieces left, player can remove 1
+
+        # case 2 invalid input > remove
+        with patch("builtins.input", ) as mocked_input:
+            with patch("builtins.print") as mocked_print:
+                mocked_input.side_effect = 2, 1  ##player tries to remove 2 pieces
+                test.player_turn(2, 1)
+                mocked_print.asser_called_with(invalid_promt)
+
+        # case 2 invalid input 0
+        with patch("builtins.input", ) as mocked_input:
+            with patch("builtins.print") as mocked_print:
+                mocked_input.side_effect = 0, 1  ##player tries to remove 0 pieces
+                test.player_turn(2, 1)
+                mocked_print.asser_called_with(invalid_promt)
+
+        # case 3 invalid input -1
+        with patch("builtins.input", ) as mocked_input:
+            with patch("builtins.print") as mocked_print:
+                mocked_input.side_effect = -1, 1  ##player tries to remove -1 piece
+                test.player_turn(2, 1)
+                mocked_print.asser_called_with(invalid_promt)
+
+        # case 4 float input
+        with patch("builtins.input", return_value=1.7) as mocked_input:
+            self.assertEqual(test.player_turn(2, 1), 1)  ## 2 pieces left, player can remove 1
+
+    def test_update_calls_methods(self):
+        test = self.new_game()
+
+        ##tests if update method is calling game methods
+
+        ##case 1 turn = 1
+        with patch("game.Game.computer_turn") as mocked_ct:
+            with patch("game.Game.player_turn") as mocked_pt:
+                test.update(1, 5, 5)
+                mocked_ct.assert_called()
+                mocked_pt.assert_called()
+
+        ##case 2 turn = 2
+        with patch("game.Game.computer_turn") as mocked_ct:
+            with patch("game.Game.player_turn") as mocked_pt:
+                test.update(2, 5, 5)
+                mocked_ct.assert_called()
+                mocked_pt.assert_called()
